@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: pg_hotel_manage_test
+  database: pg_hotel_manage
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: pg_hotel_manage_production
-  username: pg_hotel_manage
+  database: pg_hotel_manage
+  username: postgres
   password: <%= ENV["PG_HOTEL_MANAGE_DATABASE_PASSWORD"] %>
