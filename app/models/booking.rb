@@ -13,7 +13,7 @@ class Booking < ApplicationRecord
   after_save :update_room_status
   after_update :update_room_status, if: :saved_change_to_status?
   
-  enum status: { pending: 1, approved: 2, rejected: 3 }
+  enum status: { pending: 1, approved: 2, rejected: 3, cancelled: 4 }
 
   def start_date_and_end_date_check
     if start_date.present? && start_date < Date.today

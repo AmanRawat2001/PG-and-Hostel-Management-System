@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   namespace :api do
+    post "/users/signup" => "authentication#signup"
+    post "/users/login" => "authentication#login"
+
     resources :hostels, except: [:edit] do
       resources :rooms, only: [:index, :create]
     end
@@ -21,8 +24,5 @@ Rails.application.routes.draw do
         put :reject
       end
     end
-
-    post "/users/login" => "authentication#login"
-    post "/users/signup" => "authentication#signup"
   end
 end

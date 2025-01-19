@@ -31,6 +31,7 @@ class Api::BookingsController < ApplicationController
     return render json: { error: "Booking does not exist" }, status: :not_found if booking.nil?
     return render json: { error: "Booking is already approved" }, status: :bad_request if booking.status == "approved"
     return render json: { error: "Booking is already rejected" }, status: :bad_request if booking.status == "rejected"
+    return render json: { error: "Booking is already cancelled" }, status: :bad_request if booking.status == "cancelled"
 
     booking.approved!
     render json: { data: booking.as_json(only: [:id, :room_id, :resident_id, :start_date, :end_date]) }, status: :ok
@@ -41,12 +42,18 @@ class Api::BookingsController < ApplicationController
     return render json: { error: "Booking does not exist" }, status: :not_found if booking.nil?
     return render json: { error: "Booking is already rejected" }, status: :bad_request if booking.status == "rejected"
     return render json: { error: "Booking is already approved" }, status: :bad_request if booking.status == "approved"
+    return render json: { error: "Booking is already cancelled" }, status: :bad_request if booking.status == "cancelled"
 
     booking.rejected!
     render json: { data: booking.as_json(only: [:id, :room_id, :resident_id, :start_date, :end_date]) }, status: :ok
   end
 
   def destroy
+    booking = Booking.find_by(id: params[:id])
+    return render json: { error: "Booking does not exist" }, status: :not_found if booking.nil?   
+    return render json: { error: "Booking is already cancelled" }, status: :bad_request if booking.status == "cancelled"
+    booking.cancelled!
+    render json: { data: "Booking cancelled" }, status: :ok
   end
 
   private
